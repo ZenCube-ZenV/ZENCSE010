@@ -28,5 +28,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Node / Frontend
+node_modules/
+frontend-admin/dist/
+frontend-portal/dist/
+
 # Docker
 *.log

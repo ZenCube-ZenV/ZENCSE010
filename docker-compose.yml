@@ -21,5 +21,22 @@ services:
     volumes:
       - ./backend/keys:/app/keys
 
+  # TODO (Sprint 4 — US-28): Uncomment and add frontend services
+  # frontend-admin:
+  #   build: ./frontend-admin
+  #   container_name: certshield-admin
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+
+  # frontend-portal:
+  #   build: ./frontend-portal
+  #   container_name: certshield-portal
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - backend
+
 volumes:
   mongo_data:
