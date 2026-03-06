@@ -35,3 +35,9 @@ frontend-portal/dist/
 
 # Docker
 *.log
+.venv
+__pycache__
+.env
+keys
+node_modules
+dist
