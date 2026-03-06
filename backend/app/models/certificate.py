@@ -21,3 +21,72 @@ TODO (Students):
 """
 
 # TODO: implement Certificate model here
+from pydantic import BaseModel, Field, EmailStr
+from datetime import datetime
+from typing import Optional, List
+from uuid import uuid4
+
+
+# -----------------------------
+# Recipient Information
+# -----------------------------
+class Recipient(BaseModel):
+    name: str
+    email: EmailStr
+    student_id: Optional[str] = None
+
+
+# -----------------------------
+# Certificate Details
+# -----------------------------
+class CertificateInfo(BaseModel):
+    title: str
+    description: Optional[str] = None
+    skills: List[str] = []
+
+
+# -----------------------------
+# Digital Signature
+# -----------------------------
+class Signature(BaseModel):
+    algorithm: str
+    key_id: str
+    value: str
+    data_hash: str
+
+
+# -----------------------------
+# QR Code Data
+# -----------------------------
+class QR(BaseModel):
+    url: str
+    generated_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# -----------------------------
+# Main Certificate Model
+# -----------------------------
+class Certificate(BaseModel):
+
+    certificate_id: str = Field(
+        default_factory=lambda: f"CERT-{uuid4().hex[:8].upper()}"
+    )
+
+    recipient: Recipient
+    certificate: CertificateInfo
+
+    issued_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: Optional[datetime] = None
+
+    signature: Signature
+    qr: QR
+
+    status: str = "ACTIVE"
+
+    verification_count: int = 0
+    last_verified_at: Optional[datetime] = None
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    class Config:
+        populate_by_name = True

@@ -13,3 +13,12 @@ TODO (Students):
 """
 
 # TODO: implement VerificationLog model here
+from pydantic import BaseModel, Field
+from datetime import datetime
+
+
+class VerificationLog(BaseModel):
+    certificate_id: str
+    result: str  # "VALID" | "REVOKED" | "TAMPERED" | "NOT_FOUND"
+    client_ip: str
+    verified_at: datetime = Field(default_factory=datetime.utcnow)
