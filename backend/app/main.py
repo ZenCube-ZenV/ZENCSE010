@@ -33,3 +33,39 @@ TODO (Students):
 """
 
 # TODO: implement main.py here
+
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app import database
+from app.routers import certificates, verification, admin
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await database.create_indexes()
+    yield
+    await database.close_connection()
+
+
+app = FastAPI(
+    title="CertShield API",
+    description="Secure certificate issuance and verification system",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(certificates.router)
+app.include_router(verification.router)
+app.include_router(admin.router)
